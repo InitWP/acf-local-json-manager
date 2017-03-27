@@ -3,7 +3,7 @@
  * Set the folder where the acf json file wil be saved
  */
 function NAMESPACE_set_acf_json_save_folder( $path ) {
-    $path = dirname(__FILE__) . '/inc/acf-json';
+    $path = dirname(__FILE__) . '/acf-json';
     return $path;
 }
 add_filter('acf/settings/save_json', 'NAMESPACE_set_acf_json_save_folder');
@@ -13,7 +13,7 @@ add_filter('acf/settings/save_json', 'NAMESPACE_set_acf_json_save_folder');
  */
 function NAMESPACE_add_acf_json_load_folder( $paths ) {
     unset($paths[0]);
-    $paths[] = dirname(__FILE__) . '/inc/acf-json';
+    $paths[] = dirname(__FILE__) . '/acf-json';
     return $paths;
 }
 add_filter('acf/settings/load_json', 'NAMESPACE_add_acf_json_load_folder');
