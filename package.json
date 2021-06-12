@@ -2,7 +2,7 @@
 	"name": "Advanced Custom Fields Manager",
 	"type": "module",
 	"version": "0.1.0",
-	"description": "Managment functions for Advanced Custom Fields",
+	"description": "Set load & save point of local JSON + auto sync local JSON groups on admin load)",
 	"files": [
 		"acf-manager.php"
 	]

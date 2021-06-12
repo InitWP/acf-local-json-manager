@@ -2,21 +2,30 @@
 /**
  * Set the folder where the acf json file wil be saved
  */
-function NAMESPACE_set_acf_json_save_folder( $path ) {
-    $path = dirname(__FILE__) . '/acf-json';
+function NAMESPACE_acf_json_save_point( $path ) {
+	// update path
+    $path = get_stylesheet_directory() . '/inc/acf-json';
+
+    // return
     return $path;
 }
-add_filter('acf/settings/save_json', 'NAMESPACE_set_acf_json_save_folder');
+add_filter('acf/settings/save_json', 'NAMESPACE_acf_json_save_point');
 
 /**
  * Set the folder from where the acf json file wil be loaded
  */
-function NAMESPACE_add_acf_json_load_folder( $paths ) {
+function NAMESPACE_acf_json_load_point( $paths ) {
+	// remove original path (optional)
     unset($paths[0]);
-    $paths[] = dirname(__FILE__) . '/acf-json';
+
+    // append path
+    $paths[] = get_stylesheet_directory() . '/inc/acf-json';
+
+    // return
     return $paths;
+
 }
-add_filter('acf/settings/load_json', 'NAMESPACE_add_acf_json_load_folder');
+add_filter('acf/settings/load_json', 'NAMESPACE_acf_json_load_point');
 
 /**
  * Import the advanced custom fields on admin init
@@ -36,6 +45,8 @@ function NAMESPACE_sync_acf_fields() {
         $modified   = acf_maybe_get( $group, 'modified', 0 );
         $private    = acf_maybe_get( $group, 'private', false );
 
+		$unique_id = uniqid();
+
         // ignore DB / PHP / private field groups
         if( $local !== 'json' || $private ) {
 
@@ -43,11 +54,11 @@ function NAMESPACE_sync_acf_fields() {
 
         } elseif( ! $group[ 'ID' ] ) {
 
-            $sync[ $group[ 'key' ] ] = $group;
+            $sync[ $group[ 'key' ] . $unique_id ] = $group;
 
         } elseif( $modified && $modified > get_post_modified_time( 'U', true, $group[ 'ID' ], true ) ) {
 
-            $sync[ $group[ 'key' ] ]  = $group;
+            $sync[ $group[ 'key' ] . $unique_id ]  = $group;
         }
     }
 
